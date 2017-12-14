@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#topic_type_form label.error{
+	margin-left: 10px;
+	min-width: 120px;
+	display: inline;
+	position: absolute;
+	color: red;
+	line-height: 22px;
+}
+</style>
+<script type="text/javascript">
+function init(){
+	localcollapse="collapse_topic";
+	localmenu="menu_TopicType";
+	$("#topic_type_show").dialog({
+		autoOpen: false,
+		height: 540,
+	    width: 700,
+	    modal: false,
+	    buttons: {
+	    	"确定": function() {
+	    		$("#topic_type_form").submit();
+	        },
+	        "取消": function() {
+	        	$( this ).dialog( "close" );
+	        }
+	    },
+	    close: function() {
+	    	validator.resetForm();
+	    	clearForm($("#topic_type_form"));
+	    }
+	});
+
+	validator=$("#topic_type_form").validate({
+		rules: {
+			topic_type_name:"required"
+		},
+		messages: {
+			topic_type_name:"请输入名称"
+		},
+		submitHandler: function(form) {  //通过之后回调 
+			if( $("#topic_type_id_hidden").val()==0){
+				add_topic_type();
+			}
+			else{
+				update_topic_type();
+			}
+			$("#topic_type_show").dialog( "close" );
+		},
+		invalidHandler: function(form, validator) {  //不通过回调 
+			
+		},
+		
+	});
+	upload_pic();
+	get_topic_type_message();		
+}
+function get_topic_type_message(){  
+	$.ajax({   
+        type:"post",     
+        url:"{:U('TopicType/get_topic_type')}", 
+        dataType:"json",
+        success:function(data){   
+        	if(data.key==1){
+				if(data.array==null)
+				{
+					data.array="";
+				}
+				var table = "<table id='table_topic_type' class='display'><thead><tr><th>id</th><th>图片地址</th><th>账号类型</th><th>操作</th></tr></thead><tbody>";
+				$.each(data.array,function(index,value){
+					if(value.id==null){
+						value.id="";
+					}
+					if(value.name==null){
+						value.name="";
+					}
+					table+="<tr><td> "+value.id+"</td><td>"+value.picture+"</td><td> "+value.name+"</td>";
+					table+="<th><button type='button' class='btn btn-info btn-sm' onclick='get_topic_type(\""+value.id+"\")'>修改</button>";
+					table+="<button type='button' class='btn btn-info btn-sm' onclick='delete_topic_type(\""+value.id+"\")'>删除</button>";
+					
+					table+="</th></tr>";
+				}); 
+				table += "</tbody></table>";
+				$("#topic_type_Message").html(table);
+				var height=$(window).height();
+				$("#table_topic_type").DataTable(
+					{
+						 "sScrollY": height-300,
+						 "oLanguage" : Language_cn
+					}
+				);
+			}
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    }); 
+}
+
+function add_topic_type(){  
+	$.ajax({   
+        type:"post",     
+        url:"{:U('TopicType/add_topic_type')}", 
+        dataType:"json",
+        data:{
+        	"id":$("#topic_type_id").val(),
+        	"picture": $("#file_name").val(),
+        	"name":$("#topic_type_name").val(),
+        	"content":$("#add_content").val()
+        	},
+        success:function(data){   
+        	if(data.key==0){
+				alert(data.msg);
+			}
+        	else{
+    			alert("增加成功");
+    		}
+        	get_topic_type_message();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+function get_topic_type(id){
+	$("#topic_type_show").dialog("open");
+	$("#topic_type_id_hidden").val(id);
+	$.ajax({   
+        type:"post",     
+        url:"{:U('TopicType/get_topic_type')}", 
+        dataType:"json",
+        data:{"id":id},
+        success:function(data){   
+        	if(data.key==1){
+				if(data.array==null)
+				{
+					alert("无此员工，请重新选择");
+					return;
+				}
+				var value=data.array[0];
+				if(value.name!=null){
+					$("#topic_type_name").val(trim(value.name));
+					$("#add_content").val(value.content);
+					$("#file_name").val(value.picture);
+				}
+			}
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+
+function update_topic_type(){ 
+	$.ajax({   
+        type:"post",     
+        url:"{:U('TopicType/update_topic_type')}", 
+        dataType:"json",
+        data:{
+        	"id":$("#topic_type_id_hidden").val(),
+        	"picture":$("#file_name").val(),
+        	"name":$("#topic_type_name").val(),
+        	"content":$("#add_content").val()
+        	},
+        success:function(data){   
+        	if(data.key==0){
+				alert(data.msg);
+			}
+        	else{
+    			alert("修改成功");
+    		}
+        	get_topic_type_message();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+
+function delete_topic_type(id){  
+	var sure=confirm('确认删除？');
+	if(!sure){
+		return;
+	}
+	$.ajax({   
+        type:"post",     
+        url:"{:U('TopicType/delete_topic_type')}", 
+        dataType:"json",
+        data:{
+        	"id":id
+        },
+        success:function(data){   
+			if(data.key==0){
+				alert(data.msg);
+			}
+        	else{
+    			alert("删除成功");
+    		}
+        	get_topic_type_message();
+        },   
+        error:function(){   
+        	alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";  
+        }   
+    });   
+}
+function upload_pic(){
+	//var fileType = "pic",fileNum = "one";
+	    
+	var button = $('#upload_button'), interval;
+	var confirm_div = $('#upload_file_confirm');
+	var file_name=$("#file_name");
+	var flag=false;
+	new AjaxUpload(button,{
+		action: "{:U('TopicType/upload_pic')}",
+	 	data:{        	
+		},
+		name: 'userfile', 
+		onSubmit : function(file, ext){
+			if (ext && /^(jpg|png|jpeg|mp4)$/.test(ext)){
+				this.setData({
+            "type_id":$("#file_type_id").val()
+            });
+			}
+		 	else{
+				confirm_div.text('文件格式错误，请上传格式为jpg,png,jpeg的图片');
+				return false;               
+			}  
+			confirm_div.text('文件上传中');          
+			this.disable();          
+			interval = window.setInterval(function(){
+				var text = confirm_div.text();
+				if (text.length < 14){
+					confirm_div.text(text + '.');                    
+				} else {
+					confirm_div.text('文件上传中');             
+				}
+			}, 200);
+		},
+		onComplete: function(file, response){
+   
+			if(response != "success"){
+				
+				if(response =='2'){
+					//confirm_div.text("文件格式错误，请上传格式为.png .jpg .jpeg 的图片");
+				}else{
+					
+					var path="topic_type/";
+					var index=response.indexOf(path);
+					if(index<0){
+						confirm_div.text("文件上传失败请重新上传"+response);            
+					}else{
+						confirm_div.text("上传完成"+response);                        												
+						file_name.val("__PUBLIC__/Uploads/"+response);
+					}
+				}              
+			}
+			window.clearInterval(interval);                        
+			this.enable();            
+			if(response == "success")
+			alert('上传成功');            
+		}
+	});
+}
+function show_topic_type_dialog(){
+	$("#topic_type_id_hidden").val(0);
+	$("#topic_type_show").dialog("open");
+}
+</script>
+</head>
+<body onload="init()">  
+	<button type="button" class="btn btn-danger" id="bt_topic_type_show" onclick="show_topic_type_dialog()">  
+			题目类别管理 
+    </button> 
+    <input type="hidden" id="topic_type_id_hidden" value=0>
+    
+    <div id="topic_type_Message"></div> 
+	  
+	<div id="topic_type_show" title="题目类别"> 
+		<form id="topic_type_form">
+			<div class="col-sm-12">
+				<div class="col-sm-12 form-group">
+ 					<label for="topic_type_name" class="col-sm-3 control-label">题目类别名
+ 					<label class="Form_necessary">*</label>
+ 					</label>
+ 					<input type="text" class="col-sm-6" id="topic_type_name" name="topic_type_name" placeholder="请输入账号类型名称">
+				</div>											
+   			</div>
+   			<div class="col-sm-12">
+   			 <div class="col-sm-12 form-group">
+                    <label class="col-sm-3 control-label">
+                                                           图片<label class="Form_necessary">*</label>
+                    </label>
+                    <div class="col-sm-6">
+                    	<input type="hidden" id="file_name" name="file_name"> 
+                        <div id="upload_file_confirm"></div>
+                        <input type="button" class="btn btn-primary" id="upload_button"  value="上传图片" />
+                        <br/>
+                        <div class="help-inline">*请上传格式为.png .jpg .jpeg的文件</div>
+                        <div class="help-inline">*文件大小不要超过12M</div>
+                    </div>
+                </div>	
+                </div>
+                <div class="col-sm-12">
+				<div class="col-sm-12 form-group">
+ 					<label for="add_topic_content" class="col-sm-3 control-label">类别介绍
+ 					<label class="Form_necessary">*</label>
+ 					</label>
+ 					<textarea type="text" rows=20 style="height:200px"class="col-sm-12" id="add_content" content="add_topic_content" placeholder="请输类别介绍"></textarea>
+				</div>											
+   			</div>
+		</form> 
+	</div>  
+</body>
+</html>

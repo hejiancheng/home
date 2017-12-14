@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver
+END
+Db.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver/Db.class.php
+END
+Memcached.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver/Memcached.class.php
+END
+Redis.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver/Redis.class.php
+END
+Shmop.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver/Shmop.class.php
+END
+Apachenote.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver/Apachenote.class.php
+END
+Eaccelerator.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver/Eaccelerator.class.php
+END
+Memcachesae.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver/Memcachesae.class.php
+END
+Xcache.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver/Xcache.class.php
+END
+File.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver/File.class.php
+END
+Sqlite.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver/Sqlite.class.php
+END
+Wincache.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver/Wincache.class.php
+END
+Memcache.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver/Memcache.class.php
+END
+Apc.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Think/Cache/Driver/Apc.class.php
+END

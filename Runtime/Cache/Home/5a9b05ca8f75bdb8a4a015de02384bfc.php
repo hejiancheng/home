@@ -1,0 +1,7 @@
+<?php if (!defined('THINK_PATH')) exit();?>   
+    <form action="<?php echo U('Index/add');?>" method="post" enctype="multipart/form-data">
+        邮箱：<input  type="text" id="mail" name="mail"/>
+        标题：<input  type="text" id="title" name="title"/>
+        内容<input  type="text" id="content" name="content"/>
+        <input class="button" type="submit" value="发送" style="margin: 0 auto;display: block;"/>
+    </form>

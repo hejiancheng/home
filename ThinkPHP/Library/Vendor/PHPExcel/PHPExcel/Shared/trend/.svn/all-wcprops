@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Vendor/PHPExcel/PHPExcel/Shared/trend
+END
+logarithmicBestFitClass.php
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Vendor/PHPExcel/PHPExcel/Shared/trend/logarithmicBestFitClass.php
+END
+polynomialBestFitClass.php
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Vendor/PHPExcel/PHPExcel/Shared/trend/polynomialBestFitClass.php
+END
+exponentialBestFitClass.php
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Vendor/PHPExcel/PHPExcel/Shared/trend/exponentialBestFitClass.php
+END
+linearBestFitClass.php
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Vendor/PHPExcel/PHPExcel/Shared/trend/linearBestFitClass.php
+END
+trendClass.php
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Vendor/PHPExcel/PHPExcel/Shared/trend/trendClass.php
+END
+powerBestFitClass.php
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Vendor/PHPExcel/PHPExcel/Shared/trend/powerBestFitClass.php
+END
+bestFitClass.php
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/car/!svn/ver/1101/OfficialCarManage/ThinkPHP/Library/Vendor/PHPExcel/PHPExcel/Shared/trend/bestFitClass.php
+END

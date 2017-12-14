@@ -1,0 +1,927 @@
+/**
+ * This file contains basic styles shared by the whole project.
+ */
+
+
+
+/* =============================================================== */
+/* ========================= CUSTOM RESET ======================== */
+/**
+ * reset the default browser or bootstrap style.
+ */
+/* =============================================================== */
+
+/**
+ * this reset need to be removed
+ * ui change the btn design mainly have 4px radius
+ */
+.btn {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+/**
+ * reset boostrap .btn focus style
+ * need to discuss
+ */
+.btn:focus, .btn:active:focus, .btn.active:focus {
+    outline: none;
+}
+
+/**
+ * reset the label border-radius
+ */
+.label {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+
+/**
+ * reset flexslider plugin style
+ */
+.flexslider {
+    border-radius: 0;
+    border-width: 0;
+    margin-bottom: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+/**
+ * disable the last two level of RWD
+ * only avaliable larger than 970px
+ */
+.container {
+    width: 970px !important;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width:1170px !important;
+    }
+}
+
+
+/**
+ * prevent the .nav-justified to stack when window size is smaller than 768px
+ */
+.nav-justified > li {
+    display: table-cell;
+    width: 1%;
+}
+
+
+
+/**
+ * reset the select 2 button style.
+ */
+.select2-container .select2-choice{
+    background: #fff;
+    color: #8a9199;
+}
+.select2-dropdown-open{
+    background: #fff;
+}
+.select2-dropdown-open .select2-choice .select2-arrow{
+    border-left: 1px solid #ccc;
+    background-clip: padding-box;
+    background: #ccc;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc), color-stop(0.6, #eee));
+    background-image: -webkit-linear-gradient(center bottom, #ccc 0%, #eee 60%);
+    background-image: -moz-linear-gradient(center bottom, #ccc 0%, #eee 60%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#eeeeee', endColorstr = '#cccccc', GradientType = 0);
+    background-image: linear-gradient(to top, #ccc 0%, #eee 60%);
+}
+.select2-drop-active{
+    border: 1px solid #ccc;
+
+}
+.select2-container .select2-choice .select2-arrow{
+    width: 24px;
+    background: #fff;
+    border-radius: 0px;
+}
+
+.select2-container .select2-choice .select2-arrow b{
+    background-position: 3px 1px;
+}
+
+.select2-dropdown-open .select2-choice .select2-arrow b{
+    background-position: -15px 1px;
+}
+
+.select2-container-active .select2-choice, .select2-container-active .select2-choices{
+    border-color: #ccc;
+}
+.select2-drop.select2-drop-above.select2-drop-active{
+    border-color: #ccc;
+}
+
+.select2-dropdown-open.select2-drop-above .select2-choice, .select2-dropdown-open.select2-drop-above .select2-choices{
+    background: #fff;
+    border-color: #ccc;
+}
+
+.select2-results .select2-highlighted{
+    background: #aaa;
+}
+/*.select2-container .select2-choice {
+	background-image: none;
+	border-color: #cccccc;
+	z-index: 10000;
+}
+
+.select2-container .select2-choice > .select2-chosen {
+	margin-right: 36px;
+}
+
+.select2-container .select2-choice .select2-arrow {
+	width: 26px;
+	padding-left: 4px;
+	padding-right: 4px;
+	background-color: #fff;
+	background-image: none;
+	border-left: 1px solid #cccccc;
+}
+
+.select2-dropdown-open .select2-choice {
+	background-color: #fff;
+}
+
+.select2-drop-active {
+	border-color: #ccc;
+}*/
+
+
+/* =============================================================== */
+/* ========================= GENERAL TAGS ======================== */
+/**
+ * general html tags style.
+ */
+/* =============================================================== */
+
+/**
+ * set the global font style
+ * set the min-width to disable some rwd
+ */
+html, body {
+    font-family: "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    min-width: 970px;
+}
+
+
+/**
+ * set the global link style
+ */
+a {
+    color: inherit;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+}
+
+a:hover, a:focus {
+    text-decoration: none;
+}
+
+
+
+
+
+/* =============================================================== */
+/* ======================= GENERIC CLASSES ======================= */
+/**
+ * define useful classes can be used in various condition.
+ */
+/* =============================================================== */
+
+/**
+ * for those pages, blocks which have this default gray background color
+ */
+.bg-gray {
+    background-color: #f4f4f4;
+}
+
+
+.text-white {
+    color: #fff;
+}
+
+
+.label-red {
+    background-color: #e65045;
+}
+
+
+.content {
+    margin-top: 30px;
+    margin-bottom: 100px;
+}
+
+.welcome-words h2 {
+    color: #105b8a;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.welcome-words {
+    margin-bottom: 30px;
+}
+
+.break-paragraph {
+    word-break: break-all;
+    overflow: hidden;
+}
+
+
+
+/* =============================================================== */
+/* ========================= Components ========================== */
+/**
+ * For those structure can be reused across different pages.
+ */
+/* =============================================================== */
+
+/**
+ * white border button with transparent background color
+ */
+.btn-white-border {
+    border: 2px solid #fff;
+    border-radius: 0;
+    padding: 6px 8px;
+    background-color: transparent;
+    color: #fff;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.btn-white-border:hover,
+.btn-white-border:focus {
+    color: #fff;
+}
+
+
+.btn-orange {
+    color: #fff;
+    background-color: #ffa432;
+    border-width: 0;
+}
+
+.btn-orange:hover {
+    color: #fff;
+    background-color: #ff981a;
+}
+
+.btn-blue {
+    color: #fff;
+    background-color: #3690e0;
+    border-width: 0;
+}
+
+.btn-blue:hover {
+    color: #fff;
+    background-color: #217dd0;
+}
+
+
+/**
+ * custom underline with border-bottom
+ */
+.underline-link {
+    display: inline-block;
+    border-bottom: 2px solid transparent;
+    color: #8b8e90;
+}
+
+.underline-link:hover,
+.underline-link:active {
+    color: #8b8e90;
+    border-bottom-color: #8b8e90;
+}
+
+
+/**
+ * course catagory label
+ * italic font type
+ * the outcome is not satisfied at least on windows (all browsers)
+ */
+.label-course {
+    display: inline;
+    padding: 3px 8px 2px 6px;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: bold;
+    line-height: 14px;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.label-course-lg {
+    font-size: 14px;
+    padding: 6px 14px 6px 10px;
+}
+
+.label-open-course {
+    background-color: #3690e0;
+}
+
+.label-guide-course {
+    background-color: #f7a947;
+}
+
+
+/**
+ * filter block for those courses lists pages
+ * affect HTMLs
+ * - search.html
+ * - courses_list.html
+ */
+.filter-blk {
+    float: right;
+    margin-left: 20px;
+    min-width: 100px;
+}
+
+.filter-blk .btn-filter {
+    padding: 6px 10px;
+    border-width: 0;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+}
+
+.filter-blk .btn-filter:hover,
+.filter-blk .btn-filter:active,
+.filter-blk .btn-filter:focus {
+    background-color: #8c9497;
+    color: #fff;
+}
+
+.filter-blk .dropdown > p {
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.filter-blk .dropdown-menu {
+    top: 110%;
+    right: 0;
+    min-width: 100%;
+}
+
+.filter-blk .dropdown-menu > li {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.filter-blk .dropdown-menu > li > a {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+/**
+ * topic banner using in course list page
+ * affect HTMLs
+ * - login_home.html
+ * - courses_list.html
+ */
+.topic-banner {
+    width: 100%;
+    height: 120px;
+    color: #fff;
+    overflow: hidden;
+    background-image: url(../images/topic-banner.jpg);
+    background-size: cover;
+}
+
+.topic-words {
+    padding-left: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.topic-banner .btn-white-border {
+    margin-top: 40px;
+    margin-right: 40px;
+    padding: 8px 16px;
+}
+
+.topic-banner .btn-white-border:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.topic .text-muted {
+    margin-top: 20px;
+}
+
+
+
+
+/**
+ * How to graphical presentation block
+ * affect HTMLs
+ * - micro_profession_detail
+ * - certification
+ */
+
+.how-to-certificated {
+    background-color: #f6f7fb;
+    margin-bottom: 0;
+    padding-top: 80px;
+    padding-bottom: 100px;
+}
+
+.how-to-certificated h1 {
+    color: #288ce6;
+}
+
+.how-to-certificated .intro .text-muted {
+    font-size: 20px;
+}
+
+.how-to-certificated .graphical {
+    margin-top: 40px;
+}
+
+.how-to-certificated .graphical .img-responsive {
+    display: inline-block;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+
+.how-to-certificated .graphical p {
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+.how-to-certificated .bar {
+    height: 5px;
+    background-color: #008ee0;
+    border-radius: 2px;
+    position: relative;
+    bottom: -54px;
+}
+
+
+/**
+ * FAQ block
+ * affect HTMLs
+ * - micro_profession_detail
+ * - certification
+ */
+.faq-blk {
+    position: relative;
+}
+
+.faq-blk .half-img {
+    width: 50%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+    background-image: url(../images/class-1.jpg);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+}
+
+.faq-blk .faq-list {
+    background-color: #fff;
+    padding: 100px 0 100px 46px;
+}
+
+.faq-blk .faq-list h1 {
+    color: #288ce6;
+    margin-bottom: 36px;
+    margin-top: 0;
+}
+
+.faq-blk .faq-list h1 > small {
+    color: #9ca5ad;
+    font-size: 12px;
+    display: inline-block;
+    padding-top: 36px;
+}
+
+.faq-blk .faq-list .underline-link {
+    border-bottom-color: #288ce6;
+    color: #5c6166;
+}
+
+.faq-blk .faq-list li {
+    margin-bottom: 24px;
+}
+
+.faq-blk .faq-list h4 {
+    color: #45494c;
+}
+
+.faq-blk .faq-list p {
+    color: #9ca5ad;
+}
+
+
+
+
+/**
+ * custom icon font
+ * icon star style
+ */
+@font-face {
+    font-family: 'kkb-cms-icon';
+    src:url('../fonts/kkb-cms-icon.eot?b93vve');
+    src:url('../fonts/kkb-cms-icon.eot?#iefixb93vve') format('embedded-opentype'),
+    url('../fonts/kkb-cms-icon.woff?b93vve') format('woff'),
+    url('../fonts/kkb-cms-icon.ttf?b93vve') format('truetype'),
+    url('../fonts/kkb-cms-icon.svg?b93vve#kkb-cms-icon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.icon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'kkb-cms-icon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-star-empty:before {
+    content: "\e651";
+}
+.icon-star-fill:before {
+    content: "\e64f";
+}
+.icon-star-half-fill:before {
+    content: "\e650";
+}
+
+
+.icon-star-fill,
+.icon-star-half-fill {
+    color: #dbe8f2;
+}
+
+.icon-star-fill.active,
+.icon-star-half-fill.active {
+    color: #f8a948
+}
+
+.icon-large {
+    font-size: 16px;
+}
+
+.icon-normal {
+    font-size: 14px;
+}
+
+.icon-small {
+    font-size: 12px;
+}
+
+
+
+.icon-3d:before {
+    content: "\e600";
+}
+.icon-arrow-down:before {
+    content: "\e601";
+}
+.icon-arrow-left:before {
+    content: "\e602";
+}
+.icon-arrow-right:before {
+    content: "\e603";
+}
+.icon-article:before {
+    content: "\e604";
+}
+.icon-article-b:before {
+    content: "\e605";
+}
+.icon-aws:before {
+    content: "\e606";
+}
+.icon-bigdata:before {
+    content: "\e607";
+}
+.icon-book:before {
+    content: "\e608";
+}
+.icon-cancel:before {
+    content: "\e609";
+}
+.icon-category:before {
+    content: "\e60a";
+}
+.icon-certificate:before {
+    content: "\e60b";
+}
+.icon-certificate-big:before {
+    content: "\e60c";
+}
+.icon-certificate-x:before {
+    content: "\e60d";
+}
+.icon-check:before {
+    content: "\e60e";
+}
+.icon-click:before {
+    content: "\e60f";
+}
+.icon-clock:before {
+    content: "\e610";
+}
+.icon-cloud:before {
+    content: "\e611";
+}
+.icon-correct:before {
+    content: "\e612";
+}
+.icon-correct-x:before {
+    content: "\e613";
+}
+.icon-course-guid:before {
+    content: "\e614";
+}
+.icon-course-open:before {
+    content: "\e615";
+}
+.icon-data:before {
+    content: "\e616";
+}
+.icon-date:before {
+    content: "\e617";
+}
+.icon-development:before {
+    content: "\e618";
+}
+.icon-development-x:before {
+    content: "\e619";
+}
+.icon-edge1:before {
+    content: "\e61a";
+}
+.icon-edge2:before {
+    content: "\e61b";
+}
+.icon-edge3:before {
+    content: "\e61c";
+}
+.icon-edge4:before {
+    content: "\e61d";
+}
+.icon-edge5:before {
+    content: "\e61e";
+}
+.icon-edge6:before {
+    content: "\e61f";
+}
+.icon-error:before {
+    content: "\e620";
+}
+.icon-error-x:before {
+    content: "\e621";
+}
+.icon-error-x2:before {
+    content: "\e622";
+}
+.icon-exitfull:before {
+    content: "\e623";
+}
+.icon-faq1:before {
+    content: "\e624";
+}
+.icon-faq2:before {
+    content: "\e625";
+}
+.icon-faq3:before {
+    content: "\e626";
+}
+.icon-film:before {
+    content: "\e627";
+}
+.icon-finish:before {
+    content: "\e628";
+}
+.icon-full:before {
+    content: "\e629";
+}
+.icon-hd:before {
+    content: "\e62a";
+}
+.icon-heart:before {
+    content: "\e62b";
+}
+.icon-heart-x:before {
+    content: "\e62c";
+}
+.icon-hotranking:before {
+    content: "\e62d";
+}
+.icon-innovation:before {
+    content: "\e62e";
+}
+.icon-interactiondesign:before {
+    content: "\e62f";
+}
+.icon-internetmarketing:before {
+    content: "\e630";
+}
+.icon-internet:before {
+    content: "\e631";
+}
+.icon-iot:before {
+    content: "\e632";
+}
+.icon-iot-x:before {
+    content: "\e633";
+}
+.icon-kkb-logo:before {
+    content: "\e634";
+}
+.icon-learning:before {
+    content: "\e635";
+}
+.icon-level:before {
+    content: "\e636";
+}
+.icon-masses:before {
+    content: "\e637";
+}
+.icon-minus:before {
+    content: "\e638";
+}
+.icon-mobilecloud:before {
+    content: "\e639";
+}
+.icon-more:before {
+    content: "\e63a";
+}
+.icon-pause:before {
+    content: "\e63b";
+}
+.icon-play:before {
+    content: "\e63c";
+}
+.icon-play-big:before {
+    content: "\e63d";
+}
+.icon-play-big-x:before {
+    content: "\e63e";
+}
+.icon-play1:before {
+    content: "\e63f";
+}
+.icon-plus:before {
+    content: "\e640";
+}
+.icon-register:before {
+    content: "\e641";
+}
+.icon-schedule:before {
+    content: "\e642";
+}
+.icon-score:before {
+    content: "\e643";
+}
+.icon-score2:before {
+    content: "\e644";
+}
+.icon-search:before {
+    content: "\e645";
+}
+.icon-selected:before {
+    content: "\e646";
+}
+.icon-selected-star:before {
+    content: "\e647";
+}
+.icon-selected1:before {
+    content: "\e648";
+}
+.icon-selected2:before {
+    content: "\e649";
+}
+.icon-set:before {
+    content: "\e64a";
+}
+.icon-sina:before {
+    content: "\e64b";
+}
+.icon-sound:before {
+    content: "\e64c";
+}
+.icon-sound-minus:before {
+    content: "\e64d";
+}
+.icon-sound-plus:before {
+    content: "\e64e";
+}
+.icon-star-full:before {
+    content: "\e64f";
+}
+.icon-star-half:before {
+    content: "\e650";
+}
+.icon-star-line:before {
+    content: "\e651";
+}
+.icon-tabular1:before {
+    content: "\e652";
+}
+.icon-tabular2:before {
+    content: "\e653";
+}
+.icon-update:before {
+    content: "\e654";
+}
+.icon-useful:before {
+    content: "\e655";
+}
+.icon-useful-x:before {
+    content: "\e656";
+}
+.icon-useless:before {
+    content: "\e657";
+}
+.icon-useless-x:before {
+    content: "\e658";
+}
+
+
+
+
+/* =============================================================== */
+/* ====================== STRUCTURE/CONTENT ====================== */
+/**
+ * For those structure can be reused across different pages.
+ */
+/* =============================================================== */
+/**
+ * banner header
+ * header style for those transparent header above the banners
+ * Affect HTMLs:
+ * - anonymous_index.html
+ * - login_home.html
+ */
+
+
+/**
+ * banner silder
+ * slider for the big pictures on the banner
+ * override lots of flexsilder style
+ * Affect HTMLs:
+ * - anonymous_index.html
+ * - login_home.html
+ */
+
+
+
+
+/**
+ * sidebar navigation
+ * navigation for different catagory of classes
+ * Affect HTMLs:
+ * - login_home.html
+ * - search_result.html
+ */
+
+
+
+/**
+ * class card
+ * class card that shows class bisc inforamtion
+ * Affect HTMLs:
+ * - login_home.html
+ * - search_result.html
+ * - class_list.html
+ */
+
+
+
+
+/* =============================================================== */
+/* ======================== PAGES SPECIFIC ======================= */
+/**
+ * temporarily not used.
+ */
+/* =============================================================== */

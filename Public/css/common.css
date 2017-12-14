@@ -1,0 +1,58 @@
+@CHARSET "UTF-8";
+.table th,table th { 
+			text-align: center; 
+		}
+	  	.custom-combobox {
+	    	position: relative;
+	    	display: inline-block;
+	  	}
+	  	.custom-combobox-toggle {
+	   	 	position: absolute;
+	    	top: 0;
+	    	bottom: 0;
+	    	margin-left: -1px;
+	    	padding: 0;
+	  	}
+	  	.custom-combobox-input {
+	    	margin: 0;
+	    	padding: 5px 10px;
+	  	}
+	  	/* .ui-dialog
+		{
+		    overflow:visible;
+		}
+		.ui-dialog .ui-dialog-content
+		{
+		    overflow:visible;
+		} */
+		.ui-autocomplete { 
+			max-height: 200px; 
+			overflow-y: auto; 
+			/* prevent horizontal scrollbar */ 
+			overflow-x: hidden; 
+			/* add padding to account for vertical scrollbar */ 
+			padding-right: 20px; 
+		} 
+		/* IE 6 doesn't support max-height 
+		* we use height instead, but this forces the menu to always be this tall 
+		*/ 
+		* html .ui-autocomplete { 
+			height: 200px; 
+		} 
+		.ui-autocomplete-category {
+	    	font-weight: bold;
+	    	padding: .2em .4em;
+	    	margin: .8em 0 .2em;
+	    	line-height: 1.5;
+	  	}
+	  	.Form_necessary {
+			position: relative;
+			display: inline-block;
+			color: red;
+			margin-left: -5px;
+			line-height: 22px;
+			margin-bottom: 0px;
+		}
+		.readonly{
+			background-color: floralwhite;
+		}

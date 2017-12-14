@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#ad_form label.error{
+	margin-left: 10px;
+	min-width: 120px;
+	display: inline;
+	position: absolute;
+	color: red;
+	line-height: 22px;
+}
+#ad_role-error{ margin-left: 38px !important; }
+</style>
+
+<script type="text/javascript">
+function init(){
+	localcollapse="collapse_ad";
+	localmenu="menu_Ad";
+	$("#ad_show").dialog({
+		autoOpen: false,
+		height: 340,
+	    width: 550,
+	    modal: false,
+	    buttons: {
+	    	"确定": function() {
+	    		$("#ad_form").submit();
+	        },
+	        "取消": function() {
+	        	$( this ).dialog( "close" );
+	        }
+	    },
+	    close: function() {
+	    	validator.resetForm();
+	    	clearForm($("#ad_form"));
+			$("#file_name").val("");
+			$('#upload_file_confirm').text(""); 
+	    }
+	});
+
+ 	validator=$("#ad_form").validate({
+		rules: {
+			ad_business:"required"
+		},
+		messages: {
+			ad_business:"请输入商品名"
+		},
+		submitHandler: function(form) {  //通过之后回调 
+			if($("#ad_id_hidden").val()==""| $("#ad_id_hidden").val()==0){
+				if($("#file_name").val()==""){
+						alert("请上传图片!");
+						return;
+				}
+				else{
+ 	            	add_ad();
+					}
+			}
+			else{
+				update_ad();
+			}
+			$("#ad_show").dialog("close");
+		},
+		invalidHandler: function(form, validator) {  //不通过回调 
+			
+		},
+		
+	}); 
+	upload_pic();
+	get_ad_message();		
+}
+function get_ad_message(){  
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Ad/get_ad')}", 
+        dataType:"json",
+        success:function(data){   
+        	if(data.key==1){
+				if(data.array==null)
+				{
+					data.array="";
+				}
+				var table = "<table id='table_ad' class='display'><thead><tr><th>广告号</th><th>图片地址</th><th>商品信息</th><th>URL</th><th>操作</th></tr></thead><tbody>";
+				$.each(data.array,function(index,value){
+					if(value.id==null){
+						value.id="";
+					}
+					if(value.picture==null){
+						value.picture="";
+					}
+					if(value.business==null){
+						value.business="";
+					}
+					table+="<tr><td> "+value.id+"</td><td> "+value.picture+"</td><td> "+value.business+"</td><td> "+value.url+"</td>";
+					table+="<th><button type='button' class='btn btn-info btn-sm' onclick='get_ad(\""+value.id+"\")'>修改</button>";
+					table+="<button type='button' class='btn btn-info btn-sm' onclick='delete_ad(\""+value.id+"\")'>删除</button>";
+					table+="</th></tr>";
+				}); 
+				table += "</tbody></table>";
+				$("#ad_message").html(table);
+				var height=$(window).height();
+				$("#table_ad").DataTable(
+					{
+						 "sScrollY": height-300,
+						 "oLanguage" : Language_cn
+					}
+				);
+			}
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    }); 
+}
+
+function add_ad(){  
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Ad/add_ad')}", 
+        dataType:"json",
+        data:{
+        	"picture": $("#file_name").val(),
+        	"business":$("#ad_business").val(),
+        	"url":$("#url").val()
+        	},
+        success:function(data){   
+        	if(data.key==0){
+				alert(data.msg);
+			}
+        	else{
+    			alert("增加成功");
+    		}
+        	get_ad_message();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+function get_ad(id){
+	$("#ad_show").dialog("open");
+	$("#ad_id_hidden").val(id);
+	$("#ad_id").attr("readonly",true);
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Ad/get_ad')}", 
+        dataType:"json",
+        data:{"id":id},
+        success:function(data){   
+        	if(data.key==1){
+				if(data.array==null)
+				{
+					alert("无此广告，请重新选择");
+					return;
+				}
+				var value=data.array[0];
+				if(value.id!=null){
+					$("#ad_id").val(value.id); 
+				}
+				if(value.picture!=null){
+					$("#file_name").val(trim(value.picture));
+				}
+				if(value.business!=null){
+					$("#ad_business").val(trim(value.business));
+				}
+				if(value.url!=null){
+					$("#url").val(trim(value.url));
+				}
+			}
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+
+function update_ad(){  
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Ad/update_ad')}", 
+        dataType:"json",
+        data:{
+        	"id":$("#ad_id_hidden").val(),
+        	"picture": $("#file_name").val(),
+        	"business":$("#ad_business").val(),
+        	"url":$("#url").val()
+        	},
+        success:function(data){   
+        	if(data.key==0){
+				alert(data.msg);
+			}
+        	else{
+    			alert("修改成功");
+    		}
+        	get_ad_message();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+
+function delete_ad(id){  
+	var sure=confirm('确认删除？');
+	if(!sure){
+		return;
+	}
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Ad/delete_ad')}", 
+        dataType:"json",
+        data:{
+        	"id":id
+        	//"id":$("#ad_id_hidden").val()
+        },
+        success:function(data){   
+			if(data.key==0){
+				alert(data.msg);
+			}
+        	else{
+    			alert("删除成功");
+    		}
+        	get_ad_message();
+        },   
+        error:function(){   
+        	alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";  
+        }   
+    });   
+}
+
+function upload_pic(){
+	//var fileType = "pic",fileNum = "one";
+	    
+	var button = $('#upload_button'), interval;
+	var confirm_div = $('#upload_file_confirm');
+	var file_name=$("#file_name");
+	var flag=false;
+	new AjaxUpload(button,{
+		action: "{:U('Ad/upload_pic')}",
+	 	data:{        	
+		},
+		name: 'userfile', 
+		onSubmit : function(file, ext){
+			if (ext && /^(jpg|png|jpeg|mp4)$/.test(ext)){
+				this.setData({
+            "type_id":$("#file_type_id").val()
+            });
+			}
+		 	else{
+				confirm_div.text('文件格式错误，请上传格式为jpg,png,jpeg的图片');
+				return false;               
+			}  
+			confirm_div.text('文件上传中');          
+			this.disable();          
+			interval = window.setInterval(function(){
+				var text = confirm_div.text();
+				if (text.length < 14){
+					confirm_div.text(text + '.');                    
+				} else {
+					confirm_div.text('文件上传中');             
+				}
+			}, 200);
+		},
+		onComplete: function(file, response){
+   
+			if(response != "success"){
+				
+				if(response =='2'){
+					//confirm_div.text("文件格式错误，请上传格式为.png .jpg .jpeg 的图片");
+				}else{
+					
+					var path="ad/";
+					var index=response.indexOf(path);
+					if(index<0){
+						confirm_div.text("文件上传失败请重新上传"+response);            
+					}else{
+						confirm_div.text("上传完成"+response);                        												
+						file_name.val("__PUBLIC__/Uploads/"+response);
+					}
+				}              
+			}
+			window.clearInterval(interval);                        
+			this.enable();            
+			if(response == "success")
+			alert('上传成功');            
+		}
+	});
+}
+function show_ad_dialog(){
+	$("#ad_id_hidden").val(0);
+	$("#ad_show").dialog("open");
+	$("#ad_id").removeAttr("readonly");
+}
+</script>
+</head>
+
+<body onload="init()">  
+	<button type="button" class="btn btn-danger" id="bt_ad_show" onclick="show_ad_dialog()">  
+			增加新的广告
+    </button> 
+    <input type="hidden" id="ad_id_hidden" value=0>
+    <div id="ad_message"></div> 
+	  
+	<div id="ad_show" title="广告信息"> 
+		<form id="ad_form">
+			<div class="col-sm-12">
+				<div class="col-sm-12 form-group">
+ 					<label for="ad_business" class="col-sm-3 control-label">商品名
+ 					<label class="Form_necessary">*</label>
+ 					</label>
+ 					<input type="text" class="col-sm-6" id="ad_business" name="ad_business" placeholder="请输入商家信息">
+				</div>	
+				<div class="col-sm-12 form-group">
+ 					<label for="url" class="col-sm-3 control-label">URL
+ 					<label class="Form_necessary">*</label>
+ 					</label>
+ 					<input type="text" class="col-sm-6" id="url" name="url" placeholder="请输入URL">
+				</div>	
+				 <div class="col-sm-12 form-group">
+                    <label class="col-sm-3 control-label">
+                                                           图片<label class="Form_necessary">*</label>
+                    </label>
+                    <div class="col-sm-6">
+                    	<input type="hidden" id="file_name" name="file_name"> 
+                        <div id="upload_file_confirm"></div>
+                        <input type="button" class="btn btn-primary" id="upload_button"  value="上传图片" />
+                        <br/>
+                        <div class="help-inline">*请上传格式为.png .jpg .jpeg的文件</div>
+                        <div class="help-inline">*文件大小不要超过12M</div>
+                    </div>
+                </div>								
+   			</div>
+		</form> 
+	</div>  
+</body>
+</html>

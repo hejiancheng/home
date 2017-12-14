@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#role_form label.error{
+	margin-left: 10px;
+	min-width: 120px;
+	display: inline;
+	position: absolute;
+	color: red;
+	line-height: 22px;
+}
+
+</style>
+<script type="text/javascript">
+	var setting = {
+		view: {
+			selectedMulti: false
+		},
+		check: {
+			enable: true
+		},
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},
+	};
+function init(){
+	localcollapse="collapse_employee";
+	localmenu="menu_Role";
+	$("#role_show").dialog({
+		autoOpen: false,
+		height: 550,
+	    width: 550,
+	    modal: false,
+	    buttons: {
+	    	"确定": function() {
+	    		$("#role_form").submit();
+	        },
+	        "取消": function() {
+	        	$( this ).dialog( "close" );
+	        }
+	    },
+	    close: function() {
+	    	validator.resetForm();
+	    	clearForm($("#role_form"));
+	    	clear_tree($.fn.zTree.getZTreeObj("role_operationtree"));
+	    }
+	});
+
+	validator=$("#role_form").validate({
+		rules: {			
+			role_level:"required",
+			role_name:"required"
+		},
+		messages: {
+			role_level:"请输入级别",
+			role_name:"请输入名称"
+		},
+		submitHandler: function(form) {  //通过之后回调 
+			if($("#role_id").val()=="" |$("#role_id").val()==0){		
+				addrole();
+			}
+			else{				
+				updaterole();
+			}
+			$("#role_show").dialog( "close" );
+		},
+		invalidHandler: function(form, validator) {  //不通过回调 		
+		},		
+	});
+	showrole();
+}	
+function showrole(){	
+	$.ajax({  
+        type:"get",     
+        url:"{:U('Operation/getallchildoperation')}", 
+        dataType:"json",
+        success:function(data){   
+        	if(data==null)
+    		{
+        		alert("模块信息为空，请先录入模块信息");
+        		window.location.href="{:U('Operation/index')}";
+        		return;
+    		}
+        	$.fn.zTree.init($("#role_operationtree"), setting, data);
+        	getroleMessage();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });
+	
+}
+function getroleMessage(){  	
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Role/getrole')}", 
+        dataType:"json",
+        success:function(data){   
+        	if(data==null)
+    		{
+        		data="";
+    		}
+        	var table="<table id='table_role' class='display'><thead><tr><th>角色名称</th><th>级别</th><th>操作</th></tr></thead><tbody>";
+        	$.each(data,function(index,value){
+        		if(value.id==null){
+					value.id="";
+				}
+				if(value.name==null){
+					value.name="";
+				}
+				if(value.level==null){
+					value.level="";
+				}
+				table+="<tr id='role"+value.id+"'><td>"+value.name+"</td>"+"<td>"+value.level+"级</td>";
+				table+="<th><button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onclick='getrole("+value.id+")'>修改</button><button type='button' class='btn btn-info btn-sm' onclick='deleterole("+value.id+")'>删除</button></th></tr>";
+			}); 
+        	table+="</tbody></table>";
+        	$("#roleMessage").html(table);
+        	var height=$(window).height();
+			$("#table_role").DataTable(
+				{
+					 "sScrollY": height-300,
+					 "oLanguage" : Language_cn
+				}
+			);
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+function getrole(roleid){  
+	$("#role_show").dialog("open");
+	getoperation(roleid);
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Role/getrole')}", 
+        dataType:"json",
+        data:{"roleid":roleid},
+        success:function(data){   
+        	if(data==null)
+    		{
+        		alert("无此角色，请重新选择");
+        		return;
+    		}
+        	if(data.id!=null){
+        		$("#role_id").val(data.id);
+			}
+			if(data.name!=null){
+				$("#role_name").val(data.name);
+			}
+			if(data.level!=null){
+				$("#role_level").val(data.level);
+			}			
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+function getoperation(roleid){
+	var treeObj = $.fn.zTree.getZTreeObj("role_operationtree");
+	clear_tree(treeObj);
+	$.ajax({
+		type:"post",
+		url:"{:U('Role/getoperation')}",
+		dataType:"json",
+		data:{
+			"roleid":roleid
+		},		
+		success:function(data){
+			$.each(data,function(index,value){
+				var node = treeObj.getNodeByParam("id", value.operation_id, null);
+				treeObj.checkNode(node, true, true);
+			}); 			
+		},
+		error:function(){
+		    alert("长时间未操作，请重新登录！");
+		    window.location.href = "{:U('Index/index')}";
+		}
+	});
+}
+function addrole(){  
+	var treeObj = $.fn.zTree.getZTreeObj("role_operationtree");
+	var nodes = treeObj.getCheckedNodes(true);
+	var operations="";
+	if(nodes!=null){
+		for (var i=0, l=nodes.length; i<l; i++) {
+			if(nodes[i].id!=null & nodes[i].children==null){
+				operations+=nodes[i].id;
+			}
+			if(i<nodes.length-1 & nodes[i].children==null){
+				operations+=",";
+			}
+		}
+	}
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Role/addrole')}", 
+        dataType:"json",
+        data:{
+        	"name":$("#role_name").val(),
+        	"level":$("#role_level").val(),
+        	"operations":operations
+        	},
+        success:function(data){   
+        	if(data==null | data.num<1)
+        	{
+        		alert("增加失败");
+        		return;
+        	}
+        	treeObj.destroy();
+        	alert("增加成功");
+        	showrole();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+function updaterole(){  
+	var treeObj = $.fn.zTree.getZTreeObj("role_operationtree");
+	var nodes = treeObj.getCheckedNodes(true);
+	var operations="";
+	if(nodes!=null){
+		for (var i=0, l=nodes.length; i<l; i++) {
+			if(nodes[i].id!=null & nodes[i].children==null){
+				operations+=nodes[i].id;
+			}
+			if(i<nodes.length-1 & nodes[i].children==null){
+				operations+=",";
+			}
+		}
+	}
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Role/updaterole')}", 
+        dataType:"json",
+        data:{
+        	"roleid":$("#role_id").val(),
+        	"name":$("#role_name").val(),
+        	"level":$("#role_level").val(),
+        	"operations":operations
+        	},
+        success:function(data){   
+        	if(data==null | data.num<1)
+        	{
+        		alert("修改失败");
+        		return;
+        	}        	
+        	treeObj.destroy();
+        	alert("修改成功");
+        	showrole();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+function deleterole(roleid){  
+	var result=confirm('确认删除？');
+	if(!result){
+		return;
+	}
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Role/deleterole')}", 
+        dataType:"json",
+        data:{
+        	"roleid":roleid
+        	},
+        success:function(data){   
+        	if(data==null | data.num<1)
+        	{
+        		alert("删除失败");
+        	}
+        	showrole();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+function showdialogadd(){
+	$("#role_id").val("");
+	$("#role_show").dialog("open");
+}
+</script>
+</head>
+<body onload="init()"> 
+	<button type="button" class="btn btn-danger" onclick="showdialogadd()" id="bt_role_showadd">  
+			增加角色 
+    </button> 
+    <input type="hidden" id="role_id" value=0>
+    <div id="roleMessage" ></div>
+    <div id="role_show" title="角色信息"> 
+		<form id="role_form">
+			<div class="col-sm-12">
+				<div class="col-sm-12 form-group">
+ 					<label for="role_name" class="col-sm-3 control-label">名称
+ 					<label class="Form_necessary">*</label>
+ 					</label>
+ 					<input type="text" class="col-sm-6" id="role_name" name="role_name" placeholder="请输入名称">
+				</div>
+				<div class="col-sm-12 form-group">
+ 					<label for="role_level" class="col-sm-3 control-label">级别（最高为0）
+ 					<label class="Form_necessary">*</label>
+ 					</label>
+ 					<input type="text" class="col-sm-6" id="role_level" name="role_level" placeholder="请输入级别（最高为0）">
+				</div>
+				<div class="col-sm-12 form-group">
+ 					<label for="role_operationtree" class="col-sm-3 control-label">权限 					
+ 					</label>
+ 					<ul id="role_operationtree" class="ztree col-sm-6"></ul>
+				</div>											
+			</div>   			
+		</form>  
+	</div>  
+</body>
+</html>

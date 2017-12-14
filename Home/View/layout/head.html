@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+	table thead th,table tbody td{
+		text-align:center;
+	}
+</style>
+<title>{$Think.config.SITENAME}</title>
+	<script src="__PUBLIC__/js/jquery-1.11.1.min.js"></script>	
+	<script src="__PUBLIC__/js/ajaxupload.js"></script>
+	<script src="__PUBLIC__/js/jquery.cookie.js"></script>
+	<script src="__PUBLIC__/js/jQuery.md5.js"></script>	
+	<script src="__PUBLIC__/js/bootstrap.min.js"></script>
+	<script src="__PUBLIC__/js/jquery.ztree.core-3.5.js"></script>
+	<script src="__PUBLIC__/js/jquery.ztree.excheck-3.5.js"></script>
+	<script src="__PUBLIC__/js/jquery.validate.js"></script>
+	<script src="__PUBLIC__/js/jquery-ui.js"></script>
+	<link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet">
+	<link href="__PUBLIC__/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">	
+	<!-- DataTables CSS -->
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/jquery.dataTables.css">
+	<!-- DataTables -->
+	<script type="text/javascript" charset="utf8" src="__PUBLIC__/js/jquery.dataTables.min.js"></script>
+	<link href="__PUBLIC__/css/jquery-ui.css" rel="stylesheet">
+	<link rel="stylesheet" href="__PUBLIC__/css/font-awesome.min.css">
+	
+	<script src="__PUBLIC__/js/common.js"></script>
+	<link rel="stylesheet" href="__PUBLIC__/css/common.css">
+	<script type="text/javascript">
+	function get_type(type,functionname){
+		$.ajax({   
+	        type:"post",     
+	        url:"{:U('"+type[0]+"')}", 
+	        dataType:"json",
+	        data:{"name":type[1]},
+	        success:function(data){   
+	        	//alert(data);
+	        	if(data==null)
+	    		{
+	        		return;
+	    		}
+	        	content="";
+	        	$.each(data,function(index,value){
+	        		if(value.id!=null & value.name!=null){
+						if(value.id!="" & value.name!=""){
+							content+="<option value='"+value.id+"'>"+trim(value.name)+"</option>";
+						}
+					}
+	        	});
+	        	$("#"+type[2]).html(content);
+	        	$("#"+type[2]).combobox();
+	        	$("#"+type[2]).val(type[3]);
+	        	$("#"+type[2]).combobox("value",$("#"+type[2]+" option:selected").text());
+	        	functionname();
+	        },   
+	        error:function(){   
+	            alert("获取" + type[4] + "出错");
+	            //alert("长时间未操作，请重新登录！");
+	            //window.location.href = "{:U('Index/index')}";
+	        }   
+	    });
+	}
+	</script>
+</head>
+<body>
+<div id="AlertMessage" title="信息确认">
+	<p id="AlertMessageBody"  class="msgbody"></p>
+</div>
+<div id="ConfirmMessage" title="信息提问">
+	<p id="ConfirmMessageBody" class="msgbody"></p>
+</div>
+<script>
+
+</script>
+</body>
+</html>

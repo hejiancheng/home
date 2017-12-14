@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/car/!svn/ver/1501/OfficialCarManage/Home/Model
+END
+VersionModel.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/car/!svn/ver/1124/OfficialCarManage/Home/Model/VersionModel.class.php
+END
+VehicleAuditModel.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/car/!svn/ver/1101/OfficialCarManage/Home/Model/VehicleAuditModel.class.php
+END
+VehicleInsuranceRecordModel.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/car/!svn/ver/1101/OfficialCarManage/Home/Model/VehicleInsuranceRecordModel.class.php
+END
+VehicleEquipmentModel.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/car/!svn/ver/1101/OfficialCarManage/Home/Model/VehicleEquipmentModel.class.php
+END
+VehicleInsuranceModel.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/car/!svn/ver/1101/OfficialCarManage/Home/Model/VehicleInsuranceModel.class.php
+END
+CommonModel.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/car/!svn/ver/1101/OfficialCarManage/Home/Model/CommonModel.class.php
+END
+VehicleRepairApplyModel.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/car/!svn/ver/1101/OfficialCarManage/Home/Model/VehicleRepairApplyModel.class.php
+END
+VehicleEquipmentRepairModel.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/car/!svn/ver/1101/OfficialCarManage/Home/Model/VehicleEquipmentRepairModel.class.php
+END
+index.html
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/car/!svn/ver/1101/OfficialCarManage/Home/Model/index.html
+END
+VehicleOtherModel.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/car/!svn/ver/1501/OfficialCarManage/Home/Model/VehicleOtherModel.class.php
+END
+VehicleMaintenanceModel.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/car/!svn/ver/1101/OfficialCarManage/Home/Model/VehicleMaintenanceModel.class.php
+END
+VehicleRefuelModel.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/car/!svn/ver/1101/OfficialCarManage/Home/Model/VehicleRefuelModel.class.php
+END
+VehicleRepairModel.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/car/!svn/ver/1101/OfficialCarManage/Home/Model/VehicleRepairModel.class.php
+END

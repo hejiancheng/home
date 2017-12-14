@@ -1,0 +1,1 @@
+$(function(){$("#footer").addClass("sticky-footer")});

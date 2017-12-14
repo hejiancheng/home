@@ -1,0 +1,21 @@
+[ 2017-05-24T15:33:10+08:00 ] 127.0.0.1 /Hlt/index.php/Home/Home/my_topic_analyze.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000032s ]
+INFO: [ app_init ] --END-- [ RunTime:0.024389s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.030618s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.030733s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000115s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000273s ]
+NOTIC: [8] Undefined variable: user_state D:\htdocs\Hlt\Runtime\Cache\Home\943332120a029dc4532d3946cc4c8689.php 第 109 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.233206s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.233347s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.034535s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.034629s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.019878s ]
+INFO: [ app_end ] --END-- [ RunTime:0.019974s ]
+

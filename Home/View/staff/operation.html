@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#operation_form label.error{
+	margin-left: 10px;
+	min-width: 120px;
+	display: inline;
+	position: absolute;
+	color: red;
+	line-height: 22px;
+}
+</style>
+<script type="text/javascript">
+function init(){
+	localcollapse="collapse_employee";
+	localmenu="menu_Operation";
+	$("#operation_show").dialog({
+		autoOpen: false,
+		height: 550,
+	    width: 550,
+	    modal: false,
+	    buttons: {
+	    	"确定": function() {
+	    		$("#operation_form").submit();
+	        },
+	        "取消": function() {
+	        	$( this ).dialog( "close" );
+	        }
+	    },
+	    close: function() {
+	    	validator.resetForm();
+	    	clearForm($("#operation_form"));	    	
+	    }
+	});
+
+	validator=$("#operation_form").validate({
+		rules: {			
+			operation_name:"required"
+		},
+		messages: {
+			operation_name:"请输入名称"
+		},
+		submitHandler: function(form) {  //通过之后回调 
+			if($("#operation_id").val()=="" | $("#operation_id").val()==0){				
+				addoperation();
+			}
+			else{				
+				updateoperation();
+			}
+			$("#operation_show").dialog( "close" );
+		},
+		invalidHandler: function(form, validator) {  //不通过回调 
+			
+		},
+		
+	});
+	getoperationmessage();
+}
+function showchild(id){	
+	var parentClassElement=document.getElementById("operation"+id);
+	var name=parentClassElement.className;	
+	var childClassElements = getElementsByClassName("child_operation"+id);
+	if(name.indexOf("icon-minus-sign") >= 0){
+		parentClassElement.setAttribute("class", "icon-plus-sign");
+		for(var i=0; i<childClassElements.length; i++) {
+			childClassElements[i].style.display="none";
+		}
+	}
+	else{
+		parentClassElement.setAttribute("class", "icon-minus-sign");
+		for(var i=0; i<childClassElements.length; i++) {
+			childClassElements[i].style.display="";
+		}
+	}
+	
+}
+function getoperationmessage(){  	
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Operation/getoperation')}", 
+        dataType:"json",
+        success:function(data){   
+        	if(data==null)
+    		{
+        		data="";
+    		}
+        	var table="<table id='table_operation' class='display'><thead><tr><th>名称</th><th>顺序</th><th>标识</th><th>操作</th></tr></thead>";
+        	$.each(data,function(index,value){
+        		if(value.id==null){
+					value.id="";
+				}
+        		if(value.name==null){
+					value.name="";
+				}
+        		if(value.parent_id==null){
+					value.parent_id="";
+				}
+				if(value.url==null){
+					value.url="";
+				}
+				if(value.sequence==null){
+					value.sequence=0;
+				}				
+				table+="<tbody><tr><td onclick='showchild("+value.id+")'><i id='operation"+value.id+"' class='icon-plus-sign text-left'></i> "+value.name+"</td><th>"+value.sequence+"</th><td style='width:200px'>"+value.url+"</td>";
+				table+="<th><button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onclick='getoperation("+value.id+")'>修改</button>";
+				if(value.parent_id==0){
+					table+="<button type='button' class='btn btn-info btn-sm' onclick='addchildoperation("+value.id+")'>增加子模块</button>"
+				}
+				table+="<button type='button' class='btn btn-info btn-sm' onclick='deleteoperation("+value.id+")'>删除</button></th></tr></tbody>";
+				table+="<tbody id='child_operation"+value.id+"'></tbody>";
+				getchildoperation(value.id);
+			}); 
+        	table+="</table>";
+        	$("#operation_parentid").val(0);
+        	$("#operationMessage").html(table);
+        	var height=$(window).height();
+			$("#table_operation").DataTable(
+				{
+					 "sScrollY": height-300,
+					 "oLanguage" : Language_cn,
+					 "info":false,
+					 "lengthChange":false,
+					 "bPaginate": false
+				}
+			);
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    }); 
+}
+
+function getchildoperation(parentid){  
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Operation/getchildoperation')}", 
+        dataType:"json",
+        data:{"parentid":parentid},
+        success:function(data){   
+        	if(data==null)
+    		{
+        		return;
+    		}
+        	var table="";
+        	$.each(data,function(index,value){
+        		if(value.id==null){
+					value.id="";
+				}
+        		if(value.name==null){
+					value.name="";
+				}
+        		if(value.parent_id==null){
+					value.parent_id="";
+				}
+				if(value.sequence==null){
+					value.sequence=0;
+				}
+				table+="<tr style='display:none' class='child_operation"+parentid+" bg-info' id='operation"+value.id+"'><td class='text-center'>"+value.name+"</td><th>"+value.sequence+"</th><td>"+value.url+"</td>";
+				table+="<th><button type='button' class='btn btn-info btn-sm'  data-toggle='modal' data-target='#myModal' onclick='getoperation("+value.id+")'>修改</button>";
+				table+="<button type='button' class='btn btn-info btn-sm' onclick='deleteoperation("+value.id+")'>删除</button></th></tr>";
+			}); 
+        	$("#child_operation"+parentid).html(table);
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+
+function getoperation(id){  
+	$("#operation_show").dialog("open");
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Operation/getoperation')}", 
+        dataType:"json",
+        data:{"id":id},       
+        success:function(data){   
+        	if(data==null)
+    		{
+        		alert("无此日志类型，请重新选择");
+        		return;
+    		}
+        	if(data.id!=null){
+        		$("#operation_id").val(data.id);
+			}
+			if(data.name!=null){
+				$("#operation_name").val(trim(data.name));
+			}
+			if(data.sequence!=null){
+				$("#operation_sequence").val(trim(data.sequence));
+			}
+			if(data.url!=null){
+				$("#operation_url").val(trim(data.url));
+			}
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+
+function deleteoperation(id){  
+	var result=confirm('确认删除？');
+	if(!result){
+		return;
+	}
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Operation/deleteoperation')}", 
+        dataType:"json",
+        data:{
+        	"id":id
+        	},
+        success:function(data){   
+        	if(data==null | data.num<1)
+        	{
+        		if(data.num==-1){
+        			alert("请先删除子分类");
+        		}
+        		else{
+        			alert("删除失败");
+        		}
+        	}
+        	else{
+        		alert("删除成功");
+        	}
+        	getoperationmessage();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+
+function updateoperation(){  	
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Operation/updateoperation')}", 
+        dataType:"json",
+        data:{
+        	"id":$("#operation_id").val(),
+        	"name":$("#operation_name").val(),
+        	"sequence":$("#operation_sequence").val(),
+        	"url":$("#operation_url").val()
+        	},
+        success:function(data){   
+        	if(data==null | data.num<1)
+        	{
+        		alert("修改失败");
+        		return;
+        	}
+        	alert("修改成功");
+        	getoperationmessage();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+
+function addchildoperation(parentid){
+	$("#operation_parentid").val(parentid);
+	document.getElementById("bt_operation_showadd").click();
+}
+
+function addoperation(){  	
+	$.ajax({   
+        type:"post",     
+        url:"{:U('Operation/addoperation')}", 
+        dataType:"json",
+        data:{
+        	"parentid":$("#operation_parentid").val(),
+        	"name":$("#operation_name").val(),
+        	"sequence":$("#operation_sequence").val(),
+        	"url":$("#operation_url").val()
+        	},
+        success:function(data){   
+        	if(data==null | data.num<1)
+        	{
+        		alert("增加失败");
+        	}
+        	alert("增加成功");
+        	getoperationmessage();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+function showdialogadd(){
+	$("#operation_id").val("");
+	$("#operation_show").dialog("open");
+}
+</script>
+</head>
+<body onload="init()">  
+	<button type="button" class="btn btn-danger" onclick="showdialogadd()" id="bt_operation_showadd">  
+			增加主模块 
+    </button> 
+    <input type="hidden" id="operation_id" value=0>
+    <input type="hidden" id="operation_parentid" value=0>
+    <div id="operationMessage"></div>
+    <div id="operation_show" title="模块信息"> 
+		<form id="operation_form">
+			<div class="col-sm-12">
+				<div class="col-sm-12 form-group">
+ 					<label for="operation_name" class="col-sm-3 control-label">名称
+ 					<label class="Form_necessary">*</label>
+ 					</label>
+ 					<input type="text" class="col-sm-6" id="operation_name" name="operation_name" placeholder="请输入名称">
+				</div>
+				<div class="col-sm-12 form-group">
+ 					<label for="operation_sequence" class="col-sm-3 control-label">显示顺序
+ 					
+ 					</label>
+ 					<input type="text" class="col-sm-6" id="operation_sequence" name="operation_sequence" placeholder="请输入顺序">
+				</div>
+				<div class="col-sm-12 form-group">
+ 					<label for="operation_url" class="col-sm-3 control-label">标识 					
+ 					</label>
+ 					<input type="text" class="col-sm-6" id="operation_url" placeholder="请输入标识">
+				</div>											
+			</div>   			
+		</form>  
+	</div>  
+</body>
+</html>

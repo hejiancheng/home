@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#staff_form label.error{
+	margin-left: 10px;
+	min-width: 120px;
+	display: inline;
+	position: absolute;
+	color: red;
+	line-height: 22px;
+}
+#staff_role-error{ margin-left: 38px !important; }
+</style>
+<script type="text/javascript">
+function getrole(){
+	localcollapse="collapse_employee";
+	localmenu="menu_Staff";
+	var role=$("#staff_role");
+	$("#staff_show").dialog({
+		autoOpen: false,
+		height: 340,
+	    width: 550,
+	    modal: false,
+	    buttons: {
+	    	"确定": function() {
+	    		$("#staff_form").submit();
+	        },
+	        "取消": function() {
+	        	$( this ).dialog( "close" );
+	        }
+	    },
+	    close: function() {
+	    	validator.resetForm();
+	    	clearForm($("#staff_form"));
+	    }
+	});
+
+	validator=$("#staff_form").validate({
+		rules: {
+			staff_role:"required",
+			staff_id:"required",
+			staff_name:"required"
+		},
+		messages: {
+			staff_role:"请选择角色",
+			staff_id:"请输入工号",
+			staff_name:"请输入员工姓名"
+		},
+		submitHandler: function(form) {  //通过之后回调 
+			if(isempty($("#staff_id_hidden").val())| $("#staff_id_hidden").val()==0){
+				addstaff();
+			}
+			else{
+				updatestaff();
+			}
+			$("#staff_show").dialog( "close" );
+		},
+		invalidHandler: function(form, validator) {  //不通过回调 
+			
+		},
+		
+	});
+	var type=new Array();	
+	type[0]="get_type_bydb";
+	type[1]="role";
+	type[2]="staff_role";
+	type[3]=1;
+	type[4]="角色类型";	
+	get_type(type,getstaffmessage);		
+}
+function getstaffmessage(){  
+	$.ajax({   
+        type:"post",     
+        url:"{:U('staff/getstaff')}", 
+        dataType:"json",
+        success:function(data){   
+        	if(data==null)
+    		{
+        		data="";
+    		}
+        	var table = "<table id='table_staff' class='display'><thead><tr><th>工号</th><th>名称</th><th>角色</th><th>操作</th></tr></thead><tbody>";
+        	$.each(data,function(index,value){
+        		if(value.id==null){
+					value.id="";
+				}
+        		if(value.name==null){
+					value.name="";
+				}
+        		
+				if(value.role_name==null){
+					value.role_name="未分配";
+				}
+				table+="<tr><td> "+value.id+"</td><td> "+value.name+"</td><th>"+value.role_name+"</th>";
+				table+="<th><button type='button' class='btn btn-info btn-sm' onclick='getstaff(\""+value.id+"\")'>修改</button>";
+				table+="<button type='button' class='btn btn-info btn-sm' onclick='deletestaff(\""+value.id+"\")'>删除</button>";
+				table+="<button type='button' class='btn btn-info btn-sm' onclick='init_pw_staff(\""+value.id+"\")'>重置密码</button>";
+				if(value.lock==1){
+					table+="<button type='button' class='btn btn-info btn-sm' onclick='unlockstaff(\""+value.id+"\")'>解除锁定</button>";
+				}
+				
+				table+="</th></tr>";
+			}); 
+        	table += "</tbody></table>";
+        	$("#staffMessage").html(table);
+        	var height=$(window).height();
+			$("#table_staff").DataTable(
+				{
+					 "sScrollY": height-300,
+					 "oLanguage" : Language_cn
+				}
+			);
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    }); 
+}
+function init_pw_staff(id){
+	$.ajax({   
+        type:"post",     
+        url:"{:U('staff/init_pw_staff')}", 
+        dataType:"json",
+        data:{
+        	"id":id
+        	},
+        success:function(data){   
+        	if(data==null | data.num<1)
+        	{
+        		alert("重置失败");
+        	}
+        	else{
+    			alert("重置成功");
+    		}
+        },   
+        error:function(){   
+        	alert("长时间未操作，请重新登录！");
+        	window.location.href="{:U('Index/index')}";   
+        }   
+    });
+}
+function unlockstaff(id){
+	$.ajax({   
+        type:"post",     
+        url:"{:U('staff/unlockstaff')}", 
+        dataType:"json",
+        data:{
+        	"id":id
+        	},
+        success:function(data){   
+        	if(data==null | data.num<1)
+        	{
+        		alert("解锁失败");
+        	}
+        	else{
+    			alert("解锁成功");
+    		}
+        	getstaffmessage();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });
+}
+function addstaff(){  
+	$.ajax({   
+        type:"post",     
+        url:"{:U('staff/add')}", 
+        dataType:"json",
+        data:{
+        	"id":$("#staff_id").val(),
+        	"name":$("#staff_name").val(),
+        	"role":$("#staff_role").val()
+        	},
+        success:function(data){   
+        	if(data==null | data.num<1)
+        	{
+        		if(data.num==-1){
+        			alert("此账号已添加");
+        		}
+        		else{
+        			alert("增加失败");
+        		}
+        	}
+        	else{
+    			alert("增加成功");
+    		}
+        	getstaffmessage();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+function getstaff(id){
+	
+	$("#staff_show").dialog("open");
+	$("#staff_id_hidden").val(id);
+	$("#staff_id").attr("readonly",true);
+	$.ajax({   
+        type:"post",     
+        url:"{:U('staff/getstaff')}", 
+        dataType:"json",
+        data:{"id":id},
+        beforeSend: function(){
+			$("#staff_name").val("加载中...");
+			$("#staff_role").val("");
+		},
+        success:function(data){   
+        	
+        	if(data==null)
+    		{
+        		alert("无此员工，请重新选择");
+        		return;
+    		}
+        	if(data.id!=null){
+        		$("#staff_id").val(data.id);
+			}
+			if(data.name!=null){
+				$("#staff_name").val(trim(data.name));
+			}
+			if(data.role!=null){
+				$("#staff_role").val(data.role);
+				$("#staff_role").combobox('value',$("#staff_role option:selected").text());
+			}			
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+
+function updatestaff(){ 
+	$.ajax({   
+        type:"post",     
+        url:"{:U('staff/modify')}", 
+        dataType:"json",
+        data:{
+        	"id":$("#staff_id").val(),
+        	"name":$("#staff_name").val(),
+        	"role":$("#staff_role").val()
+        	},
+        success:function(data){   
+        	if(data==null | data.num<1)
+        	{
+        		alert("修改失败");
+        	}
+        	else{
+    			alert("修改成功");
+    		}
+        	getstaffmessage();
+        },   
+        error:function(){   
+            alert("长时间未操作，请重新登录！");
+            window.location.href = "{:U('Index/index')}";
+        }   
+    });   
+}
+
+function deletestaff(id){  
+	var sure=confirm('确认删除？');
+	if(!sure){
+		return;
+	}
+	$.ajax({   
+                type:"post",     
+                url:"{:U('staff/delete')}", 
+                dataType:"json",
+                data:{
+                	"id":id
+                	},
+                success:function(data){   
+                	if(data==null | data.num<1)
+                	{
+                		if(data.num==-1){
+                			alert("请先删除子分类");
+                		}
+                		else{
+                			alert("删除失败");
+                		}
+                	}
+                	else{
+                		alert("删除成功");
+            		}
+                	getstaffmessage();
+                },   
+                error:function(){   
+                	alert("删除时后台数据库出错");   
+                }   
+            });   
+}
+
+function showdialogadd(){
+	$("#staff_id_hidden").val(0);
+	$("#staff_show").dialog("open");
+	$("#staff_id").removeAttr("readonly");
+}
+</script>
+</head>
+<body onload="getrole()">  
+	<button type="button" class="btn btn-danger" id="bt_staff_showadd" onclick="showdialogadd()">  
+			增加员工账号 
+    </button> 
+    <input type="hidden" id="staff_id_hidden" value=0>
+    <div id="staffMessage"></div> 
+	  
+	<div id="staff_show" title="员工账号信息"> 
+		<form id="staff_form">
+			<div class="col-sm-12">
+				<div class="col-sm-12 form-group">
+ 					<label for="staff_id" class="col-sm-3 control-label">工号
+ 					<label class="Form_necessary">*</label>
+ 					</label>
+ 					<input type="text" class="col-sm-6" id="staff_id" name="staff_id" readonly>
+				</div>
+				<div class="col-sm-12 form-group">
+ 					<label for="staff_name" class="col-sm-3 control-label">姓名
+ 					<label class="Form_necessary">*</label>
+ 					</label>
+ 					<input type="text" class="col-sm-6" id="staff_name" name="staff_name" placeholder="请输入姓名">
+				</div>
+				<div class="col-sm-12 form-group">
+ 					<label for="staff_role" class="col-sm-3 control-label">角色
+ 					<label class="Form_necessary">*</label>
+ 					</label>
+ 					<select id="staff_role" class="col-sm-6" name="staff_role"></select>
+				</div>											
+   			</div>
+		</form> 
+	</div>  
+</body>
+</html>

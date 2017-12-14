@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<!-- 头部包含的css、js等 -->
+		<include file="layout:head"/>
+	</head>
+	<body>
+		<div class="container" id="system_window">
+			<!-- 页面的顶部 -->
+			<include file="layout:top"/>
+			<div class="row">
+				<!-- 页面内容左边的菜单栏-->
+				<include file="layout:left"/>
+				<div class="col-sm-9" id="system_content">
+					<!-- 内容页 -->
+					<ol class="breadcrumb">
+						<li>{$parentname}</li>
+						<li class="active">{$childname}</li>
+					</ol>
+					{__CONTENT__}
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
